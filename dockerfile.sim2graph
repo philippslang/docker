@@ -1,0 +1,25 @@
+FROM centos:7
+
+# System-wide packages
+RUN yum install -y gcc gcc-c++ gdb make findutils which chrpath \
+    bzip2-devel bzip2 zlib-devel wget binutils unzip zip gpg \
+    git file autoconf automake libuuid tree \
+    libmpc-devel mpfr-devel gmp-devel \
+    && yum clean all \
+    && rm -rf /var/cache/yum
+RUN yum -y install epel-release
+RUN yum install -y cmake python python-pip
+RUN pip install --upgrade pip
+
+# libecl
+RUN cd /var \
+    && git clone https://github.com/Statoil/libecl \
+    && cd libecl \
+    && pip install -r requirements.txt \
+    && mkdir build \
+    && cd build \
+    && cmake .. -DENABLE_PYTHON=ON -DCMAKE_INSTALL_PREFIX=/usr/lib/libecl \
+    && make -j 2 \
+    && make install
+ENV PYTHONPATH=/usr/lib/libecl/lib/python2.7/site-packages:$PYTHONPATH
+ENV LD_LIBRARY_PATH=/usr/lib/libecl/lib64:$LD_LIBRARY_PATH

@@ -26,11 +26,23 @@ g.list_properties()
 nprop = g.vertex_properties[nprop_viz]
 nprop.a = (normalize(nprop.a) + 1.0) * 10.0
 eprop = g.edge_properties[eprop_viz]
-eprop.a = normalize(eprop.a) + 1.0
+print(eprop.a)
+eprop.a = (normalize(eprop.a) + 1.0)**2
 
 
 #sys.exit()
 
+pos = gt.sfdp_layout(g)
+
 
 gt.graph_draw(g, vertex_size=nprop, edge_color=eprop, edge_pen_width=eprop,
-  output_size=(900, 800), bg_color=(1, 1, 1, 1), output="{}.png".format(graph_name))
+  output_size=(900, 800), bg_color=(1, 1, 1, 1), output="{}.png".format(graph_name),
+  pos=pos)
+
+
+u = gt.GraphView(g, efilt=lambda e: eprop[e] > eprop.a.max() / 2.0 )
+
+
+gt.graph_draw(u, vertex_size=nprop, edge_color=eprop, edge_pen_width=eprop,
+  output_size=(900, 800), bg_color=(1, 1, 1, 1), output="{}_filtered.png".format(graph_name),
+  pos=pos)

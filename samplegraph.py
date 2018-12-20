@@ -6,14 +6,6 @@ import sys
 import time
 import matplotlib.pyplot as plt
 
-"""
-g = gt.Graph(directed=False)
-v1 = g.add_vertex()
-v2 = g.add_vertex()
-e = g.add_edge(v1, v2)
-
-g.save("graph.gt")
-"""
 
 def normalize(a):
     c = a - a.min()

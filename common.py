@@ -5,6 +5,7 @@ import numpy as np
 import sys
 import time
 import matplotlib.pyplot as plt
+import graph_tool.draw as gtd
 
 def normalize(a):
     c = a - a.min()
@@ -35,7 +36,8 @@ def layout(g):
 @run_step("render")
 def render(g, eprop, nprop, graph_name, pos, vertex_size=None, 
   edge_pen_width=None, **kwargs):
-    pos = gt.graph_draw(g, 
+    _graph_draw = gt.graph_draw
+    pos = _graph_draw(g, 
       vertex_size=vertex_size, 
       edge_pen_width=edge_pen_width,
       edge_color=eprop, 
@@ -45,7 +47,7 @@ def render(g, eprop, nprop, graph_name, pos, vertex_size=None,
       output="{}.png".format(graph_name),
       #output_size=(900, 800), 
       pos=pos,
-      vcmap=matplotlib.cm.gist_heat_r,
+      vcmap=matplotlib.cm.plasma,
       **kwargs)
     return pos
 
@@ -60,3 +62,4 @@ def histo(props, graph_name, nb_bins=10):
 @run_step("constructing view")
 def view(g, vfilter=None, efilter=None):    
     return gt.GraphView(g, vfilt=vfilter, efilt=efilter)
+
